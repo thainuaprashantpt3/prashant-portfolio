@@ -1,0 +1,1 @@
+{"name":"portfolio-server","type":"module","scripts":{"dev":"node --watch index.js","start":"node index.js"},"dependencies":{"cors":"^2.8.5","dotenv":"^17.4.2","express":"^5.1.0","resend":"^6.26.0"}}
