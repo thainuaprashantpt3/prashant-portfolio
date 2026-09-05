@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   ArrowRight,
@@ -10,9 +10,7 @@ import {
   Code2,
   Database,
   ShieldCheck,
-  Layers3,
   Server,
-  Braces,
   CheckCircle2,
   AlertCircle,
   Menu,
@@ -43,10 +41,11 @@ const skills = [
       'HTML5',
       'CSS3',
       'Tailwind CSS',
-      'React Router'
+      'React Router',
+      'Reusable Components'
     ],
     note:
-      'I build responsive interfaces, reusable components, dashboards, forms and API-driven user experiences.'
+      'Responsive interfaces, reusable components, dashboards, forms and API-driven UX.'
   },
   {
     title: 'Backend',
@@ -57,7 +56,9 @@ const skills = [
       'REST APIs',
       'JWT',
       'Middleware',
-      'CRUD'
+      'CRUD',
+      'Validation',
+      'Error Handling'
     ],
     note:
       'I build structured APIs with authentication, validation, error handling and clear request-response flows.'
@@ -69,7 +70,10 @@ const skills = [
       'MySQL',
       'MongoDB',
       'Mongoose',
-      'Database Design'
+      'Database Design',
+      'Schema Design',
+      'Relationships',
+      'Queries'
     ],
     note:
       'I work with relational schemas, queries, relationships and application data management.'
@@ -82,85 +86,11 @@ const skills = [
       'GitHub',
       'RBAC',
       'Postman',
-      'Authentication'
+      'Authentication',
+      'API Testing'
     ],
     note:
-      'I use version control, API testing, authentication and role-based access to build complete applications.'
-  }
-];
-
-const concepts = [
-  {
-    name: 'React Components',
-    icon: Code2,
-    plain:
-      'Reusable building blocks for creating maintainable user interfaces.',
-    detail:
-      'Components allow the UI to be divided into smaller reusable pieces such as forms, dashboards, tables and navigation elements.',
-    example: 'Component → Props → UI'
-  },
-  {
-    name: 'React State',
-    icon: Code2,
-    plain:
-      'Keeps the interface synchronized with changing application data.',
-    detail:
-      'State can manage form values, loading states, filters, selected records and API responses so the UI reacts to changes.',
-    example: 'State → Update → Re-render'
-  },
-  {
-    name: 'REST API',
-    icon: Braces,
-    plain:
-      'A communication layer between the frontend and backend.',
-    detail:
-      'REST APIs expose resources through HTTP methods such as GET, POST, PUT and DELETE and return structured responses.',
-    example: 'React → GET /api/users → Express → JSON'
-  },
-  {
-    name: 'JWT Authentication',
-    icon: ShieldCheck,
-    plain:
-      'Verifies the identity of users accessing protected resources.',
-    detail:
-      'After successful login, the server issues a signed token. The token is verified before protected API routes are allowed.',
-    example: 'Login → JWT → Protected API'
-  },
-  {
-    name: 'RBAC',
-    icon: Layers3,
-    plain:
-      'Controls application access based on user roles.',
-    detail:
-      'Role-Based Access Control ensures different users can access only the features and resources permitted to their role.',
-    example: 'User → Role → Permission → Resource'
-  },
-  {
-    name: 'Middleware',
-    icon: Server,
-    plain:
-      'Reusable logic that runs between a request and its controller.',
-    detail:
-      'Middleware is commonly used for authentication, authorization, validation, logging and centralized request handling.',
-    example: 'Request → Middleware → Controller'
-  },
-  {
-    name: 'Database Relationships',
-    icon: Database,
-    plain:
-      'Connects related application data while maintaining consistency.',
-    detail:
-      'Relational databases use keys and relationships to connect entities and maintain data integrity.',
-    example: 'Employee → Attendance → Leave'
-  },
-  {
-    name: 'CRUD',
-    icon: Layers3,
-    plain:
-      'The basic operations used to manage application data.',
-    detail:
-      'Create, Read, Update and Delete form the foundation of many business applications and API workflows.',
-    example: 'Create → Read → Update → Delete'
+      'Version control, API testing, authentication, RBAC and maintainable application structure.'
   }
 ];
 
@@ -210,6 +140,30 @@ const projects = [
 ];
 
 function Section({ eyebrow, title, children, id }) {
+  useEffect(() => {
+    const elements = document.querySelectorAll(
+      'main section, .skill-card, .project-card, .exp-grid > div, .contact-card, .education-card'
+    );
+
+    elements.forEach((element) => element.classList.add('reveal'));
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    elements.forEach((element) => observer.observe(element));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section className="section" id={id}>
       <div className="section-head">
@@ -223,7 +177,6 @@ function Section({ eyebrow, title, children, id }) {
 }
 
 function App() {
-  const [open, setOpen] = useState(null);
   const [menu, setMenu] = useState(false);
 
   const [form, setForm] = useState({
@@ -352,14 +305,13 @@ function App() {
 
       <header className="nav">
         <a className="brand" href="#top">
-          <span>P</span> PT
+          Prashant Thainua
         </a>
 
         <nav className={menu ? 'nav-open' : ''}>
           {[
             ['about', 'About'],
             ['skills', 'Skills'],
-            ['concepts', 'Core Concepts'],
             ['projects', 'Projects'],
             ['experience', 'Experience'],
             ['contact', 'Contact']
@@ -404,8 +356,7 @@ function App() {
           <div className="hero-copy">
 
             <div className="status">
-              <i />
-              Open to Full Stack & Software Developer opportunities
+              Hire me 
             </div>
 
             <p className="kicker">
@@ -443,65 +394,20 @@ function App() {
               </a>
             </div>
 
-            <div className="proof">
-              <div>
-                <strong>15+</strong>
-                <span>REST endpoints</span>
-              </div>
 
-              <div>
-                <strong>3</strong>
-                <span>core layers: UI · API · DB</span>
-              </div>
-
-              <div>
-                <strong>2</strong>
-                <span>full-stack projects</span>
-              </div>
-            </div>
 
           </div>
 
           <div className="hero-visual">
-            <div className="orb" />
-
-            <div className="code-card">
-              <div className="dots">
-                <i />
-                <i />
-                <i />
-              </div>
-
-              <p>
-                <span>const</span> app = <b>build</b>{`{`}
-              </p>
-
-              <p className="indent">
-                frontend: <strong>React</strong>,
-              </p>
-
-              <p className="indent">
-                backend: <strong>Express</strong>,
-              </p>
-
-              <p className="indent">
-                auth: <strong>JWT + RBAC</strong>,
-              </p>
-
-              <p className="indent">
-                data: <strong>MySQL</strong>
-              </p>
-
-              <p>{`});`}</p>
-
-              <div className="flow">
-                <span>React</span>
-                <b>→</b>
-                <span>API</span>
-                <b>→</b>
-                <span>Auth</span>
-                <b>→</b>
-                <span>DB</span>
+            <div className="hero-image-frame">
+              <img
+                className="hero-image"
+                src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=85"
+                alt="Developer working on a software project"
+              />
+              <div className="hero-image-caption">
+                <Code2 size={15} />
+                Building reliable web applications
               </div>
             </div>
           </div>
@@ -607,83 +513,10 @@ function App() {
           </div>
         </Section>
 
-        {/* ================= CONCEPTS ================= */}
-
-        <Section
-          eyebrow="03 · How I Think"
-          title="Core concepts"
-          id="concepts"
-        >
-          <p className="section-intro">
-            A portfolio should prove understanding, not just
-            list technologies. Click a concept to see the short
-            version I use when explaining it.
-          </p>
-
-          <div className="concept-grid">
-
-            {concepts.map((concept, index) => {
-              const Icon = concept.icon;
-              const active = open === index;
-
-              return (
-                <article
-                  className={`concept ${
-                    active ? 'active' : ''
-                  }`}
-                  key={concept.name}
-                  onClick={() =>
-                    setOpen(active ? null : index)
-                  }
-                >
-                  <div className="concept-top">
-                    <div className="icon">
-                      <Icon size={19} />
-                    </div>
-
-                    <span className="num">
-                      0{index + 1}
-                    </span>
-                  </div>
-
-                  <h3>{concept.name}</h3>
-
-                  <p className="plain">
-                    {concept.plain}
-                  </p>
-
-                  {active && (
-                    <div className="concept-detail">
-                      <p>{concept.detail}</p>
-
-                      <code>
-                        {concept.example}
-                      </code>
-                    </div>
-                  )}
-
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setOpen(active ? null : index);
-                    }}
-                  >
-                    {active
-                      ? 'Hide explanation'
-                      : 'Explain →'}
-                  </button>
-                </article>
-              );
-            })}
-
-          </div>
-        </Section>
-
         {/* ================= PROJECTS ================= */}
 
         <Section
-          eyebrow="04 · Selected Work"
+          eyebrow="03 · Selected Work"
           title="Projects that demonstrate the architecture."
           id="projects"
         >
@@ -738,7 +571,7 @@ function App() {
         {/* ================= EXPERIENCE ================= */}
 
         <Section
-          eyebrow="05 · Experience"
+          eyebrow="04 · Experience"
           title="Where I applied the stack."
           id="experience"
         >
@@ -767,7 +600,6 @@ function App() {
               <div className="exp-grid">
 
                 <div>
-                  <strong>01</strong>
                   <p>
                     Built and integrated 15+ RESTful
                     endpoints with authentication,
@@ -777,7 +609,6 @@ function App() {
                 </div>
 
                 <div>
-                  <strong>02</strong>
                   <p>
                     Built{' '}
                     <b>
@@ -789,7 +620,6 @@ function App() {
                 </div>
 
                 <div>
-                  <strong>03</strong>
                   <p>
                     Modelled normalized{' '}
                     <b>MySQL schemas</b> for employees,
@@ -798,7 +628,6 @@ function App() {
                 </div>
 
                 <div>
-                  <strong>04</strong>
                   <p>
                     Integrated React with backend APIs,
                     including async states, HTTP errors
@@ -815,7 +644,7 @@ function App() {
         {/* ================= EDUCATION ================= */}
 
         <Section
-          eyebrow="06 · Education"
+          eyebrow="05 · Education"
           title="Academic foundation."
           id="education"
         >
@@ -866,7 +695,7 @@ function App() {
           <div className="contact-copy">
 
             <span className="eyebrow">
-              07 · Contact
+              06 · Contact
             </span>
 
             <h2>
@@ -1028,9 +857,6 @@ function App() {
           © 2026 Prashant Thainua
         </span>
 
-        <span>
-          React · Node.js · Express · MySQL
-        </span>
       </footer>
 
     </div>
