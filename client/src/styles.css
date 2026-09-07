@@ -1555,3 +1555,108 @@ body {
     transform: translateY(4px) !important;
   }
 }
+
+
+/* MOBILE HAMBURGER — keep it clearly visible over the professional theme */
+@media (max-width: 900px) {
+  .nav {
+    position: sticky;
+    z-index: 100;
+  }
+
+  .menu {
+    display: grid !important;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    padding: 8px !important;
+    color: #172033 !important;
+    background: #ffffff !important;
+    border: 1px solid #dce2ea !important;
+    border-radius: 9px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: relative;
+    z-index: 101;
+  }
+
+  .menu:hover,
+  .menu:focus {
+    color: #2457d6 !important;
+    background: #f5f8ff !important;
+    border-color: #c7d5ec !important;
+  }
+
+  .menu svg {
+    width: 21px;
+    height: 21px;
+    stroke: currentColor;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}
+
+
+/* =========================================================
+   MOBILE NAV — FORCE HAMBURGER VISIBILITY
+   ========================================================= */
+@media screen and (max-width: 900px) {
+  header.nav {
+    display: flex !important;
+    align-items: center !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 9999 !important;
+    min-height: 64px !important;
+    background: rgba(255, 255, 255, 0.97) !important;
+  }
+
+  header.nav > .menu {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 42px !important;
+    width: 42px !important;
+    height: 42px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 10000 !important;
+    color: #172033 !important;
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 9px !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08) !important;
+  }
+
+  header.nav > .menu svg {
+    display: block !important;
+    width: 23px !important;
+    height: 23px !important;
+    min-width: 23px !important;
+    min-height: 23px !important;
+    color: #172033 !important;
+    stroke: #172033 !important;
+    stroke-width: 2.2 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  header.nav > .menu:hover,
+  header.nav > .menu:focus-visible,
+  header.nav > .menu:active {
+    color: #2457d6 !important;
+    background: #eef6ff !important;
+    border-color: #93c5fd !important;
+    outline: none !important;
+  }
+
+  header.nav > .menu:hover svg,
+  header.nav > .menu:focus-visible svg,
+  header.nav > .menu:active svg {
+    color: #2457d6 !important;
+    stroke: #2457d6 !important;
+  }
+}
