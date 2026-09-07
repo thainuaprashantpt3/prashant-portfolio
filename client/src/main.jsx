@@ -179,6 +179,38 @@ function Section({ eyebrow, title, children, id }) {
 function App() {
   const [menu, setMenu] = useState(false);
 
+  useEffect(() => {
+    const site = document.querySelector('.site');
+    if (!site || window.matchMedia('(pointer: coarse)').matches) return;
+
+    const moveCursor = (event) => {
+      site.style.setProperty('--cursor-x', `${event.clientX}px`);
+      site.style.setProperty('--cursor-y', `${event.clientY}px`);
+    };
+
+    const updateCursorMode = (event) => {
+      const card = event.target.closest(
+        '.skill-card, .project, .experience-card, .edu-grid > div, .lead-card, .contact-form, .hero-image-frame'
+      );
+      site.classList.toggle('cursor-on-card', Boolean(card));
+    };
+
+    const showCursor = () => site.classList.add('cursor-active');
+    const hideCursor = () => site.classList.remove('cursor-active');
+
+    window.addEventListener('pointermove', moveCursor, { passive: true });
+    window.addEventListener('pointerover', updateCursorMode, { passive: true });
+    window.addEventListener('pointerenter', showCursor);
+    window.addEventListener('pointerleave', hideCursor);
+
+    return () => {
+      window.removeEventListener('pointermove', moveCursor);
+      window.removeEventListener('pointerover', updateCursorMode);
+      window.removeEventListener('pointerenter', showCursor);
+      window.removeEventListener('pointerleave', hideCursor);
+    };
+  }, []);
+
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -301,6 +333,18 @@ function App() {
   return (
     <div className="site">
 
+      <div className="custom-cursor" aria-hidden="true">
+        <span className="cursor-dot" />
+        <span className="cursor-ring" />
+        <span className="cursor-label">VIEW</span>
+      </div>
+
+      <div className="ambient-background" aria-hidden="true">
+        <span className="ambient-orb ambient-orb-one" />
+        <span className="ambient-orb ambient-orb-two" />
+        <span className="ambient-orb ambient-orb-three" />
+      </div>
+
       {/* ================= NAVIGATION ================= */}
 
       <header className="nav">
@@ -359,13 +403,11 @@ function App() {
               Hire me 
             </div>
 
-            <p className="kicker">
-              FULL STACK DEVELOPER · REACT · NODE · DATABASES
-            </p>
+            
 
             <h1>
               Building complete web applications{' '}
-              <em>from UI to API.</em>
+              
             </h1>
 
             <p className="hero-text">
